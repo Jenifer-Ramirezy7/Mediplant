@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Historial de Escaneos</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+        .right-panel {
+            background-color: rgb(127, 106, 3);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+.mi-boton-cafe {
+    background-color: #6f4e37;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.mi-boton-cafe:hover {
+    background-color: #5a3c29;
+}
+
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover {
+            animation: bounce 0.5s;
+        }
+
+
+
+</style>
+
+  </style>
+</head>
+<body style="background-color: rgb(127, 106, 3);">
+<br>
+<br>
+  <h1>Historial de Reconocimientos</h1>
+  <br>
+  <p>Total de escaneos: <span id="totalEscaneos">0</span></p>
+  <br>
+  <p>Plantas diferentes: <span id="plantasDiferentes">0</span></p>
+<br>
+<br>
+  <table>
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Nombre de la Planta</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody id="historial">
+      <!-- Aquí se insertará el historial -->
+    </tbody>
+  </table>
+
+  <script>
+    function mostrarHistorial() {
+      let historial = JSON.parse(localStorage.getItem('historial')) || [];
+      let contenedor = document.getElementById('historial');
+      contenedor.innerHTML = '';
+
+      let plantasUnicas = new Set();
+
+      historial.forEach((entrada, index) => {
+        plantasUnicas.add(entrada.nombre);
+        contenedor.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${entrada.nombre}</td>
+            <td>${entrada.fecha}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('totalEscaneos').innerText = historial.length;
+      document.getElementById('plantasDiferentes').innerText = plantasUnicas.size;
+    }
+
+    // Llenar automáticamente al cargar la página
+    document.addEventListener("DOMContentLoaded", mostrarHistorial);
+
+    function borrarHistorial() {
+    if (confirm("¿Estás segura de que deseas borrar todo el historial?")) {
+        localStorage.removeItem('historial');
+        mostrarHistorial(); // Actualiza la tabla
+        alert("Historial borrado.");
+    }
+}
+function borrarHistorial() {
+    if (confirm("¿Estás segura de que deseas borrar todo el historial?")) {
+        localStorage.removeItem('historial');
+        mostrarHistorial(); // Actualiza la tabla
+        alert("Historial borrado correctamente.");
+    }
+}
+
+
+  </script>
+<div class="right-panel">
+<button class="mi-boton-cafe btn btn-lg mt-4" onclick="borrarHistorial()"> Borrar historial</button>
+<a href="Escaneo.html"><button class="mi-boton-cafe btn btn-lg mt-4"> Volver a escanear</button></a>
+</div>
+</body>
+</html>
+
